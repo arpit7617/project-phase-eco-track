@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EcoTrack - Live Location</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/weather">Weather</a>
+    <a href="/aqi">AQI Monitor</a>
+    <a href="/community">Community</a>
+    <a href="/location">📍 Live Location</a>
+  </nav>
+
+  <h1>📍 Weather & AQI Based on Your Location</h1>
+  <p id="status">Detecting your location...</p>
+  <div id="output"></div>
+
+  <script>
+    async function fetchLocationData(lat, lon) {
+      try {
+        const res = await fetch(`/location-data?lat=${lat}&lon=${lon}`);
+        const data = await res.json();
+
+        document.getElementById("output").innerHTML = `
+          <h2>${data.city}, ${data.country}</h2>
+          <p><strong>Temperature:</strong> ${data.temp}°C</p>
+          <p><strong>Condition:</strong> ${data.description}</p>
+          <p><strong>AQI:</strong> ${data.aqi}</p>
+          <p><strong>Main Pollutant:</strong> ${data.pollutant}</p>
+        `;
+        document.getElementById("status").innerText = "✅ Location fetched successfully!";
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ Failed to fetch location data.";
+      }
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        fetchLocationData(latitude, longitude);
+      },
+      () => {
+        document.getElementById("status").innerText = "⚠️ Location access denied.";
+      }
+    );
+  </script>
+</body>
+</html>
