@@ -1,53 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>EcoTrack - Weather</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Weather | EcoTrack</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/weather.css">
+
 </head>
 <body>
-
-  <nav>
+  <!-- 🌿 Navbar -->
+<nav class="navbar">
+  <div class="logo">🌱 EcoTrack</div>
+  <div class="nav-links">
     <a href="/">Home</a>
     <a href="/weather">Weather</a>
-    <a href="/aqi">AQI Monitor</a>
+    <a href="/aqi">AQI</a>
+    <a href="/location">My Location</a>
     <a href="/community">Community</a>
-    <a href="/location">📍 Live Location</a>
-  </nav>
+  </div>
+</nav>
 
-  <h1>Real-Time Weather 🌦️</h1>
 
-  <form id="weatherForm" class="weather-form">
-    <label for="city">Enter City:</label>
-    <input type="text" id="city" name="city" required />
-    <button type="submit">Get Weather</button>
-  </form>
+  <!-- 🌤️ Weather Form Section -->
+  <section class="weather-section">
+    <h1>Check the Weather</h1>
+    <form class="weather-form">
+      <input type="text" placeholder="Enter your city..." required />
+      <button type="submit">Get Weather</button>
+    </form>
+  </section>
+  <!-- 📊 Weather Results -->
+  <section id="weather-info" class="weather-results hidden">
+    <h2>Weather Report</h2>
+    <p><strong>City:</strong> <span id="city">--</span></p>
+    <p><strong>Temperature:</strong> <span id="temp">--</span> °C</p>
+    <p><strong>Condition:</strong> <span id="condition">--</span></p>
+    <p><strong>Humidity:</strong> <span id="humidity">--</span>%</p>
+    <p><strong>Wind Speed:</strong> <span id="wind">--</span> km/h</p>
+  </section>
 
-  <div id="weather-info"></div>
+  <!-- 🌍 Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 EcoTrack | Promoting a Greener Tomorrow 🌍</p>
+  </footer>
 
-  <script>
-    document.getElementById("weatherForm").addEventListener("submit", async (e) => {
+  <!-- JS for demo (optional) -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('.weather-form');
+    const info = document.getElementById('weather-info');
+
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const city = document.getElementById("city").value;
+      
+      console.log("Form submitted");
 
-      const res = await fetch(`/weather/api/weather?city=${city}`);
-      const data = await res.json();
+      // Optional: Add mock data for now (remove if using real API)
+      document.getElementById('city').textContent = "Sample City";
+      document.getElementById('temp').textContent = "27";
+      document.getElementById('condition').textContent = "Partly Cloudy";
+      document.getElementById('humidity').textContent = "60";
+      document.getElementById('wind').textContent = "10";
 
-      if (data.error) {
-        document.getElementById("weather-info").innerHTML = "<p>❌ Weather data not available. Please try again.</p>";
-        return;
-      }
-
-      document.getElementById("weather-info").innerHTML = `
-        <h2>${data.name} Weather</h2>
-        <p>🌡️ Temperature: ${data.temp}°C</p>
-        <p>🌤️ Condition: ${data.condition}</p>
-        <p>💧 Humidity: ${data.humidity}%</p>
-        <p>🌬️ Wind Speed: ${data.wind} m/s</p>
-      `;
+      info.classList.remove('hidden');
     });
-  </script>
+  });
+</script>
 
 </body>
 </html>

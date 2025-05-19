@@ -1,0 +1,34 @@
+#aqi-info {
+  max-width: 700px;
+  margin: 2em auto;
+  background: #ffffff;
+  padding: 1.5em;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.1);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.good {
+  color: green;
+  font-weight: bold;
+}
+.moderate {
+  color: orange;
+  font-weight: bold;
+}
+.sensitive {
+  color: #cc6600;
+  font-weight: bold;
+}
+.unhealthy {
+  color: red;
+  font-weight: bold;
+}
+.very-unhealthy {
+  color: purple;
+  font-weight: bold;
+}
+.hazardous {
+  color: maroon;
+  font-weight: bold;
+}

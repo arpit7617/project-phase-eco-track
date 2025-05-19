@@ -1,180 +1,52 @@
-/* public/style.css - EcoTrack Theme 🌿 */
-
+/* public/style.css */
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to right, #e0f7ec, #f1fff9);
-  color: #333;
   margin: 0;
-  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #e8f5e9, #f1fff9);
+  color: #333;
+  animation: fadeInBody 1s ease-in-out;
 }
 
-nav {
+.navbar {
   background-color: #2f855a;
-  padding: 1em;
+  padding: 1em 2em;
   display: flex;
-  justify-content: center;
-  gap: 2em;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-nav a {
-  color: white;
+.navbar .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.nav-links a {
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1em;
-  transition: color 0.3s;
+  margin: 0 1em;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-nav a:hover {
+.nav-links a:hover {
   color: #d4f8e8;
 }
 
-h1, h2 {
-  text-align: center;
-  color: #2f855a;
-  margin-top: 1.5em;
-}
-
-form {
-  max-width: 500px;
-  margin: 2em auto;
-  padding: 1.5em;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.1);
-}
-
-label {
-  display: block;
-  margin-top: 1em;
-  font-weight: 500;
-}
-
-input[type="text"],
-input[type="password"],
-textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border: 1px solid #a0d9b4;
-  border-radius: 8px;
-  font-size: 1em;
-}
-
-button {
-  margin-top: 1.5em;
-  padding: 12px 20px;
-  background-color: #38a169;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
+.footer {
   background-color: #2f855a;
-}
-
-#weather-info, #aqi-info, #tips-container {
-  max-width: 700px;
-  margin: 2em auto;
-  background: #ffffff;
-  padding: 1.5em;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.1);
-  animation: fadeIn 0.4s ease-in-out;
-}
-
-/* Weather Section Styling */
-form label {
-  font-size: 1.1em;
-  color: #2f855a;
-}
-
-#weather-info h2 {
-  margin-bottom: 0.8em;
-  color: #2f855a;
-}
-
-#weather-info p {
-  font-size: 1.1em;
-  margin: 0.4em 0;
-  color: #333;
-  line-height: 1.5;
-}
-
-/* Weather Form Styling */
-form.weather-form {
-  margin-top: 2em;
-  padding: 2em;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 128, 96, 0.1);
-  text-align: center;
-}
-
-form.weather-form input[type="text"] {
-  padding: 10px 15px;
-  border: 1px solid #a0d9b4;
-  border-radius: 8px;
-  font-size: 1em;
-  width: 60%;
-  max-width: 400px;
-}
-
-form.weather-form button {
-  margin-left: 1em;
-  padding: 10px 16px;
-  background-color: #38a169;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-form.weather-form button:hover {
-  background-color: #2f855a;
-}
-
-footer {
   text-align: center;
   padding: 1em;
-  background: #2f855a;
-  color: white;
   margin-top: 3em;
 }
 
-@keyframes fadeIn {
+/* Animations */
+@keyframes fadeInBody {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* ✅ AQI Level Color Classes */
-.good {
-  color: green;
-  font-weight: bold;
-}
-.moderate {
-  color: orange;
-  font-weight: bold;
-}
-.sensitive {
-  color: #cc6600;
-  font-weight: bold;
-}
-.unhealthy {
-  color: red;
-  font-weight: bold;
-}
-.very-unhealthy {
-  color: purple;
-  font-weight: bold;
-}
-.hazardous {
-  color: maroon;
-  font-weight: bold;
 }
