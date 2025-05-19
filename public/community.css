@@ -24,7 +24,7 @@ body {
   font-size: 1.5em;
   font-weight: bold;
   color: #ffffff;
-}
+} 
 
 .nav-links a {
   color: #ffffff;
@@ -96,29 +96,126 @@ form button:hover {
   background-color: #276749;
 }
 
-/* === Tips Section === */
-h2 {
-  text-align: center;
-  margin: 2.5em 0 1em;
-  color: #2f855a;
-}
-
 #tips-container {
-  max-width: 800px;
-  margin: 0 auto 3em;
-  background: #f9fdfb;
-  padding: 1.5em;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+  margin: 3em auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: flex-start; /* Left aligned tips */
 }
 
-#tips-container p {
+/* Tip Card */
+.tip-card {
+  width: 100%;
   background: #ffffff;
-  margin: 1em 0;
-  padding: 1em;
-  border-left: 5px solid #2f855a;
+  border-radius: 16px;
+  padding: 1.5em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  transition: transform 0.2s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Header */
+.tip-header {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.tip-header img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #2f855a;
+}
+
+.tip-username {
+  font-weight: bold;
+  color: #2f855a;
+  font-size: 1.1em;
+}
+
+.tip-date {
+  font-size: 0.85em;
+  color: #888;
+}
+
+/* Tip Content */
+.tip-content p {
+  font-size: 1em;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Footer */
+.tip-footer {
+  display: flex;
+  gap: 1.5em;
+  align-items: center;
+  margin-top: 0.5em;
+}
+
+.tip-footer button {
+  background: none;
+  border: none;
+  font-size: 0.95em;
+  cursor: pointer;
+  color: #2f855a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  transition: color 0.2s ease;
+}
+
+.tip-footer button:hover {
+  color: #276749;
+}
+
+
+/* === Leaderboard Section === */
+#leaderboard-btn {
+  display: block;
+  margin: 2em auto 0;
+  background: #2c7a7b;
+  color: white;
+  padding: 0.8em 1.5em;
+  font-size: 1em;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#leaderboard-btn:hover {
+  background: #285e61;
+}
+
+#leaderboard-container {
+  max-width: 700px;
+  margin: 2em auto;
+  background: #ffffff;
+  padding: 1.5em;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  display: none;
+}
+
+.leaderboard-item {
+  margin: 0.8em 0;
+  padding: 0.6em 1em;
+  background: #f0fff4;
+  border-left: 4px solid #38a169;
+  border-radius: 6px;
+  font-weight: 500;
 }
 
 /* === Animations === */
@@ -126,3 +223,84 @@ h2 {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1em;
+  }
+
+  .nav-links a {
+    margin: 0.5em 0;
+  }
+
+  form {
+    padding: 1.5em;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  p {
+    font-size: 1em;
+  }
+
+  #tips-container {
+    padding: 1em;
+  }
+}
+
+/* === Footer Styling === */
+footer {
+  background-color: #2f855a;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+  margin-top: 3em;
+  font-size: 0.95em;
+  box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.05);
+}
+
+footer a {
+  color: #d4f8e8;
+  text-decoration: none;
+  margin: 0 0.5em;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* === Input Focus Styling === */
+form input[type="text"]:focus,
+form textarea:focus {
+  border-color: #2f855a;
+  box-shadow: 0 0 5px rgba(47, 133, 90, 0.4);
+  outline: none;
+}
+
+/* === Smooth Scroll === */
+html {
+  scroll-behavior: smooth;
+}
+
+/* === Subtle Section Fade-In Animation (Optional) === */
+.fade-section {
+  animation: fadeInSection 0.8s ease-in-out;
+}
+
+@keyframes fadeInSection {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
