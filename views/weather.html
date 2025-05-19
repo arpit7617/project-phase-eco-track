@@ -1,3 +1,4 @@
+<!-- /views/weather.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,9 @@
   <title>Weather | EcoTrack</title>
   <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="/weather.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-  <!-- 🌿 Navbar -->
   <nav class="navbar">
     <div class="logo">🌱 EcoTrack</div>
     <div class="nav-links">
@@ -19,66 +20,41 @@
     </div>
   </nav>
 
-  <!-- 🌤️ Weather Form Section -->
   <section class="weather-section">
-    <h1>Check the Weather</h1>
+    <h1>🌤️ Live Weather Info</h1>
     <form class="weather-form">
       <input type="text" placeholder="Enter your city..." required />
-      <button type="submit">Get Weather</button>
+      <button type="submit"><i class="fas fa-search-location"></i> Get Weather</button>
     </form>
+
+    <section id="weather-info" class="weather-results hidden">
+      <div class="weather-card">
+        <div class="weather-icon">
+          <img id="weather-icon" src="" alt="Weather Icon" />
+        </div>
+        <div class="weather-details">
+          <h2 id="city">--</h2>
+          <p class="temp"><i class="fas fa-thermometer-half"></i> <span id="temp">--</span> °C</p>
+          <p class="condition"><i class="fas fa-cloud-sun"></i> <span id="condition">--</span></p>
+          <div class="stat">
+            <label>💧 Humidity</label>
+            <div class="bar"><div class="fill humidity-fill" style="width: 0%;" id="humidity-bar"></div></div>
+            <p><span id="humidity">--</span>%</p>
+          </div>
+          <div class="stat">
+            <label>🌬️ Wind Speed</label>
+            <div class="bar"><div class="fill wind-fill" style="width: 0%;" id="wind-bar"></div></div>
+            <p><span id="wind">--</span> km/h</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </section>
 
-  <!-- 📊 Weather Results -->
-  <section id="weather-info" class="weather-results hidden">
-    <h2>Weather Report</h2>
-    <p><strong>City:</strong> <span id="city">--</span></p>
-    <p><strong>Temperature:</strong> <span id="temp">--</span> °C</p>
-    <p><strong>Condition:</strong> <span id="condition">--</span></p>
-    <p><strong>Humidity:</strong> <span id="humidity">--</span>%</p>
-    <p><strong>Wind Speed:</strong> <span id="wind">--</span> km/h</p>
-  </section>
-
-  <!-- 🌍 Footer -->
   <footer class="footer">
     <p>&copy; 2025 EcoTrack | Promoting a Greener Tomorrow 🌍</p>
   </footer>
 
-  <!-- JS: fetch real weather from backend -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const form = document.querySelector('.weather-form');
-      const info = document.getElementById('weather-info');
-
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        const cityInput = form.querySelector('input[type="text"]').value.trim();
-        if (!cityInput) return;
-
-        try {
-          const response = await fetch(`/weather/api/weather?city=${encodeURIComponent(cityInput)}`);
-          const data = await response.json();
-
-          if (data.error) {
-            alert(data.error);
-            info.classList.add('hidden');
-            return;
-          }
-
-          document.getElementById('city').textContent = data.name || cityInput;
-          document.getElementById('temp').textContent = data.temp ?? '--';
-          document.getElementById('condition').textContent = data.condition ?? '--';
-          document.getElementById('humidity').textContent = data.humidity ?? '--';
-          document.getElementById('wind').textContent = data.wind ?? '--';
-
-          info.classList.remove('hidden');
-        } catch (error) {
-          alert('Failed to fetch weather data. Please try again later.');
-          info.classList.add('hidden');
-          console.error('Weather fetch error:', error);
-        }
-      });
-    });
-  </script>
+  <script src="/js/weather.js"></script>
 </body>
 </html>

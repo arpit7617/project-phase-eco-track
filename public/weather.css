@@ -1,87 +1,104 @@
 .weather-section {
+  flex-grow: 1;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   text-align: center;
-  padding: 4em 2em;
-  background: linear-gradient(to right, #d4f8e8, #f0fff5);
-  animation: slideInTop 0.7s ease-out;
+  animation: fadeInBody 1s ease-in-out;
 }
 
-.weather-section h1 {
-  font-size: 2.8em;
-  color: #2f855a;
-  margin-bottom: 1.2em;
-}
-
-.weather-form input[type="text"] {
-  padding: 0.8em 1.2em;
-  width: 60%;
-  max-width: 400px;
-  font-size: 1em;
-  border: 1px solid #a0d9b4;
-  border-radius: 8px;
-  margin-right: 0.5em;
+.weather-form input {
+  padding: 0.75rem 1rem;
+  width: 65%;
+  font-size: 1rem;
+  border: 2px solid #2d8659;
+  border-radius: 8px 0 0 8px;
+  outline: none;
 }
 
 .weather-form button {
-  padding: 0.8em 1.5em;
-  background-color: #38a169;
-  color: white;
+  padding: 0.75rem 1.2rem;
+  font-size: 1rem;
   border: none;
-  border-radius: 8px;
-  font-size: 1em;
+  background-color: #2d8659;
+  color: white;
+  font-weight: bold;
+  border-radius: 0 8px 8px 0;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .weather-form button:hover {
-  background-color: #2f855a;
+  background-color: #1b4d32;
 }
 
 .weather-results {
-  max-width: 700px;
-  margin: 2em auto;
-  background: #ffffff;
-  padding: 2em;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 128, 96, 0.15);
-  animation: fadeIn 0.6s ease-in-out;
+  margin-top: 2rem;
+  text-align: left;
 }
 
-.weather-results h2 {
+.weather-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
+  background: #e8f5e9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(45, 134, 89, 0.15);
+}
+
+.weather-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+.weather-details {
+  flex-grow: 1;
+}
+
+.weather-details h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
   color: #2f855a;
-  font-size: 2em;
-  margin-bottom: 1em;
 }
 
-.weather-results p {
-  font-size: 1.2em;
-  margin: 0.6em 0;
-  color: #444;
-  line-height: 1.5;
+.weather-details p {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat {
+  margin-top: 1rem;
+}
+
+.bar {
+  width: 100%;
+  height: 12px;
+  background-color: #c8e6c9;
+  border-radius: 8px;
+  margin-top: 0.3rem;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.humidity-fill {
+  background-color: #4caf50;
+}
+
+.wind-fill {
+  background-color: #81c784;
 }
 
 .hidden {
   display: none;
-}
-
-/* Animations */
-@keyframes slideInTop {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
