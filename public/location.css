@@ -152,12 +152,9 @@ h1 {
   }
 }
 
-/* --- Map Section Styles --- */
-
-/* Container for the map */
-#map {
+#aqi-map {
   width: 100%;
-  max-width: 900px;
+  max-width: 600px;
   height: 450px;
   margin: 2.5rem auto;
   border-radius: 16px;
@@ -169,7 +166,7 @@ h1 {
 }
 
 /* Hover effect for map container */
-#map:hover {
+#aqi-map:hover {
   transform: scale(1.01);
   box-shadow:
     0 10px 20px rgba(39, 103, 73, 0.2),
@@ -178,13 +175,13 @@ h1 {
 
 /* Adjustments for smaller screens */
 @media (max-width: 768px) {
-  #map {
+  #aqi-map {
     height: 350px;
   }
 }
 
 @media (max-width: 480px) {
-  #map {
+  #aqi-map {
     height: 300px;
     margin: 2rem 0;
   }

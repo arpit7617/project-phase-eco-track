@@ -1,34 +1,200 @@
-#aqi-info {
-  max-width: 700px;
-  margin: 2em auto;
-  background: #ffffff;
-  padding: 1.5em;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 128, 96, 0.1);
-  animation: fadeIn 0.4s ease-in-out;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #e8f5e9, #f1fff9);
+  color: #333;
+  animation: fadeInBody 1s ease-in-out;
 }
 
-.good {
-  color: green;
-  font-weight: bold;
+.navbar {
+  background-color: #2f855a;
+  padding: 1em 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
-.moderate {
-  color: orange;
+
+.navbar .logo {
+  font-size: 1.5em;
   font-weight: bold;
+  color: #ffffff;
 }
-.sensitive {
-  color: #cc6600;
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 1em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #d4f8e8;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-top: 1em;
+  color: #2f855a;
+  animation: fadeInBody 1s ease-in;
+}
+
+.weather-form {
+  max-width: 500px;
+  margin: 2em auto;
+  padding: 2em;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.weather-form label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5em;
+  color: #2f855a;
+}
+
+.weather-form input[type="text"] {
+  width: 80%;
+  padding: 0.7em;
+  border: 2px solid #b2dfdb;
+  border-radius: 12px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.weather-form input[type="text"]:focus {
+  border-color: #2f855a;
+  background: #f1fff9;
+}
+
+.weather-form button {
+  margin-top: 1em;
+  background-color: #2f855a;
+  color: white;
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.weather-form button:hover {
+  background-color: #276749;
+}
+
+/* AQI Info Card */
+#aqi-info {
+  max-width: 600px;
+  margin: 2em auto;
+  padding: 2em;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeInBody 1s ease-in;
+}
+
+#aqi-info h2 {
+  color: #2f855a;
+  margin-bottom: 0.5em;
+}
+
+#aqi-info p {
+  margin: 0.5em 0;
+  font-size: 1.05em;
+}
+
+#aqi-info span {
   font-weight: bold;
+  padding: 0.2em 0.6em;
+  border-radius: 8px;
 }
-.unhealthy {
-  color: red;
-  font-weight: bold;
+
+span.good {
+  background: #c8e6c9;
+  color: #256029;
 }
-.very-unhealthy {
-  color: purple;
-  font-weight: bold;
+
+span.moderate {
+  background: #fff9c4;
+  color: #827717;
 }
-.hazardous {
-  color: maroon;
-  font-weight: bold;
+
+span.unhealthy {
+  background: #ffccbc;
+  color: #b71c1c;
 }
+
+span.hazardous {
+  background: #ef9a9a;
+  color: #880e4f;
+}
+
+/* Map Styling */
+#aqi-map {
+  width: 90%;
+  height: 400px;
+  border-radius: 20px;
+  margin: 2em auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+  background-color: #2f855a;
+  color: white;
+  text-align: center;
+  padding: 1em;
+  font-size: 0.95em;
+  border-top: 1px solid #1c5d41;
+}
+
+/* Animations */
+@keyframes fadeInBody {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#map {
+  width: 100%;
+  max-width: 900px;
+  height: 450px;
+  margin: 2.5rem auto;
+  border-radius: 16px;
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, 0.1),
+    0 12px 24px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for map container */
+#map:hover {
+  transform: scale(1.01);
+  box-shadow:
+    0 10px 20px rgba(39, 103, 73, 0.2),
+    0 14px 36px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  #map {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  #map {
+    height: 300px;
+    margin: 2rem 0;
+  }
+}
+
