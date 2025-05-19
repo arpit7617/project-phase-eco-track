@@ -58,17 +58,19 @@ function createTables() {
       )`, (err) => {
         if (err) return reject(err);
       });
-      db.run(`CREATE TABLE IF NOT EXISTS sustainability_logs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        category TEXT NOT NULL,        -- e.g., 'Car-free day', 'Plastic avoided', 'Water saved'
-        quantity REAL DEFAULT 1,       -- e.g., 1 day, 3 items, 2 liters
-        date_logged DATE DEFAULT CURRENT_DATE,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
-      )`, (err) => {
-        if (err) return reject(err);
-      });
+
+db.run(`CREATE TABLE IF NOT EXISTS sustainability_logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  activity TEXT NOT NULL,
+  category TEXT NOT NULL,
+  quantity REAL NOT NULL,
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+)`, (err) => {
+  if (err) return reject(err);
+});
+
 
 
       // If all runs succeed, resolve after last one

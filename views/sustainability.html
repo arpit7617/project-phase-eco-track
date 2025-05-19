@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sustainability Tracker | EcoTrack</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/sustainability.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🌱 EcoTrack</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/weather">Weather</a>
+      <a href="/aqi">AQI</a>
+      <a href="/location">My Location</a>
+      <a href="/community">Community</a>
+      <a href="/sustainability">Sustainability</a>
+    </div>
+  </nav>
+
+  <section class="sustainability-section">
+    <h1>Sustainability Tracker 🌍</h1>
+
+   <form id="log-form">
+     <input type="text" name="activity" placeholder="What did you do?" required />
+     <input type="text" name="category" placeholder="Category (e.g., plastic, water)" required />
+     <input type="number" name="quantity" step="0.01" placeholder="Quantity saved or avoided" required />
+     <button type="submit">Log Activity</button>
+   </form>
+
+
+
+    <canvas id="sustainabilityChart" width="600" height="300"></canvas>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 EcoTrack | Promoting a Greener Tomorrow 🌍</p>
+  </footer>
+
+  <script src="/js/sustainability.js"></script>
+</body>
+</html>

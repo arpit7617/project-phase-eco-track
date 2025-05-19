@@ -36,6 +36,7 @@ const aqiRoutes = require("./routes/aqi");
 const authRoutes = require("./routes/auth");
 const locationRoutes = require("./routes/location");
 const logsRoutes = require("./routes/logs");
+const sustainabilityRouter = require('./routes/sustainability');
 
 
 
@@ -48,6 +49,7 @@ app.use("/aqi", aqiRoutes);
 app.use("/", authRoutes);
 app.use("/location", locationRoutes);
 app.use("/", logsRoutes);
+app.use('/sustainability', sustainabilityRouter);
 
 
 // Live location API
