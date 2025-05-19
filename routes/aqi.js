@@ -92,7 +92,6 @@ router.get("/api/aqi", async (req, res) => {
         await logAction(userId, `Fetched AQI data for city: ${city}`);
       } catch (logErr) {
         console.error("Logging error:", logErr.message);
-        // Don't block response on logging failure
       }
     }
 

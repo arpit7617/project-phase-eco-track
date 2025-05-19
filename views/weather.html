@@ -3,23 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Weather | EcoTrack</title>
-<link rel="stylesheet" href="/style.css">
-<link rel="stylesheet" href="/weather.css">
-
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/weather.css" />
 </head>
 <body>
   <!-- 🌿 Navbar -->
-<nav class="navbar">
-  <div class="logo">🌱 EcoTrack</div>
-  <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/weather">Weather</a>
-    <a href="/aqi">AQI</a>
-    <a href="/location">My Location</a>
-    <a href="/community">Community</a>
-  </div>
-</nav>
-
+  <nav class="navbar">
+    <div class="logo">🌱 EcoTrack</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/weather">Weather</a>
+      <a href="/aqi">AQI</a>
+      <a href="/location">My Location</a>
+      <a href="/community">Community</a>
+    </div>
+  </nav>
 
   <!-- 🌤️ Weather Form Section -->
   <section class="weather-section">
@@ -29,6 +27,7 @@
       <button type="submit">Get Weather</button>
     </form>
   </section>
+
   <!-- 📊 Weather Results -->
   <section id="weather-info" class="weather-results hidden">
     <h2>Weather Report</h2>
@@ -44,28 +43,42 @@
     <p>&copy; 2025 EcoTrack | Promoting a Greener Tomorrow 🌍</p>
   </footer>
 
-  <!-- JS for demo (optional) -->
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.weather-form');
-    const info = document.getElementById('weather-info');
+  <!-- JS: fetch real weather from backend -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const form = document.querySelector('.weather-form');
+      const info = document.getElementById('weather-info');
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      
-      console.log("Form submitted");
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
 
-      // Optional: Add mock data for now (remove if using real API)
-      document.getElementById('city').textContent = "Sample City";
-      document.getElementById('temp').textContent = "27";
-      document.getElementById('condition').textContent = "Partly Cloudy";
-      document.getElementById('humidity').textContent = "60";
-      document.getElementById('wind').textContent = "10";
+        const cityInput = form.querySelector('input[type="text"]').value.trim();
+        if (!cityInput) return;
 
-      info.classList.remove('hidden');
+        try {
+          const response = await fetch(`/weather/api/weather?city=${encodeURIComponent(cityInput)}`);
+          const data = await response.json();
+
+          if (data.error) {
+            alert(data.error);
+            info.classList.add('hidden');
+            return;
+          }
+
+          document.getElementById('city').textContent = data.name || cityInput;
+          document.getElementById('temp').textContent = data.temp ?? '--';
+          document.getElementById('condition').textContent = data.condition ?? '--';
+          document.getElementById('humidity').textContent = data.humidity ?? '--';
+          document.getElementById('wind').textContent = data.wind ?? '--';
+
+          info.classList.remove('hidden');
+        } catch (error) {
+          alert('Failed to fetch weather data. Please try again later.');
+          info.classList.add('hidden');
+          console.error('Weather fetch error:', error);
+        }
+      });
     });
-  });
-</script>
-
+  </script>
 </body>
 </html>

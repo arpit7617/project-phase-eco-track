@@ -24,6 +24,7 @@ function logAction(userId, action) {
     const sql = `INSERT INTO logs (user_id, action) VALUES (?, ?)`;
     db.run(sql, [userId, action], function(err) {
       if (err) return reject(err);
+      console.log(`✅ Log added: ${action} for user ID ${userId}`);
       resolve();
     });
   });
@@ -34,7 +35,7 @@ router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "views", "weather.html"));
 });
 
-// API route to return weather data as JSON (accessible to all)
+// API route to return weather data as JSON (log if logged in)
 router.get("/api/weather", async (req, res) => {
   const city = req.query.city || "Delhi";
   const apiKey = process.env.OPENWEATHER_API_KEY;
@@ -44,15 +45,15 @@ router.get("/api/weather", async (req, res) => {
     const response = await axios.get(weatherUrl);
     const data = response.data;
 
-    // If user is logged in, log the action
     if (req.session && req.session.user) {
       try {
         const userId = await getUserId(req.session.user);
-        await logAction(userId, `Fetched weather data for city: ${city}`);
+        await logAction(userId, `Fetched Weather data for city: ${city}`);
       } catch (logErr) {
         console.error("Logging error:", logErr.message);
       }
     }
+    console.log("checking test");
 
     res.json({
       name: data.name,
@@ -63,7 +64,7 @@ router.get("/api/weather", async (req, res) => {
       wind: data.wind.speed
     });
   } catch (error) {
-    console.error("Weather fetch error:", error.message);
+    console.error("❌ Weather fetch error:", error.message);
     res.json({ error: "Unable to fetch weather. Try again later." });
   }
 });
