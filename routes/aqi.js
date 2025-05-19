@@ -1,4 +1,3 @@
-// routes/aqi.js
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
@@ -26,28 +25,35 @@ router.get("/", async (req, res) => {
     const aqi = pollution.aqius;
     let aqiStatus = "";
     let advice = "";
+    let aqiClass = "";
 
     if (aqi <= 50) {
       aqiStatus = "Good";
       advice = "Air quality is ideal for most individuals.";
+      aqiClass = "good";
     } else if (aqi <= 100) {
       aqiStatus = "Moderate";
       advice = "Unusually sensitive people should consider limiting outdoor activity.";
+      aqiClass = "moderate";
     } else if (aqi <= 150) {
       aqiStatus = "Unhealthy for Sensitive Groups";
       advice = "People with respiratory or heart issues should limit prolonged exertion.";
+      aqiClass = "sensitive";
     } else if (aqi <= 200) {
       aqiStatus = "Unhealthy";
       advice = "Everyone may begin to experience health effects.";
+      aqiClass = "unhealthy";
     } else if (aqi <= 300) {
       aqiStatus = "Very Unhealthy";
       advice = "Health warnings of emergency conditions.";
+      aqiClass = "very-unhealthy";
     } else {
       aqiStatus = "Hazardous";
       advice = "Everyone should avoid all outdoor exertion.";
+      aqiClass = "hazardous";
     }
 
-    // Send custom HTML
+    // Send custom HTML with styled AQI level
     const html = `
       <html>
         <head>
@@ -74,7 +80,7 @@ router.get("/", async (req, res) => {
 
           <div id="aqi-info">
             <h2>${name}, ${country}</h2>
-            <p><strong>AQI:</strong> ${aqi} (${aqiStatus})</p>
+            <p><strong>AQI:</strong> <span class="${aqiClass}">${aqi} (${aqiStatus})</span></p>
             <p><strong>Main Pollutant:</strong> ${pollution.mainus}</p>
             <p><strong>Health Advice:</strong> ${advice}</p>
             <p><strong>Last Updated:</strong> ${pollution.ts}</p>

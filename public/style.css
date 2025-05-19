@@ -104,6 +104,7 @@ form label {
   color: #333;
   line-height: 1.5;
 }
+
 /* Weather Form Styling */
 form.weather-form {
   margin-top: 2em;
@@ -139,8 +140,6 @@ form.weather-form button:hover {
   background-color: #2f855a;
 }
 
-
-
 footer {
   text-align: center;
   padding: 1em;
@@ -152,4 +151,30 @@ footer {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ✅ AQI Level Color Classes */
+.good {
+  color: green;
+  font-weight: bold;
+}
+.moderate {
+  color: orange;
+  font-weight: bold;
+}
+.sensitive {
+  color: #cc6600;
+  font-weight: bold;
+}
+.unhealthy {
+  color: red;
+  font-weight: bold;
+}
+.very-unhealthy {
+  color: purple;
+  font-weight: bold;
+}
+.hazardous {
+  color: maroon;
+  font-weight: bold;
 }
