@@ -42,7 +42,7 @@
         <div class="tip-header">
           <img src="<%= tip.imageUrl || '/images/default.jpg' %>" alt="User Image" />
           <div>
-            <p class="tip-username"><%= tip.username %></p>
+            <p class="tip-username"><%= tip.username %> <%= tip.id %></p>
             <p class="tip-date"><%= tip.date %></p>
           </div>
         </div>
@@ -50,9 +50,12 @@
         <div class="tip-content">
           <p><%= tip.tip %></p>
         </div>
-
+        
         <div class="tip-footer">
-          <button type="button" class="like-btn">❤️ <span><%= tip.likes %></span></button>
+          <button type="button" class="like-btn" data-tipid="<%= tip.id %>">
+            ❤️ <span><%= tip.likes %></span>
+          </button>
+
         </div>
       </div>
     <% }); %>
@@ -60,5 +63,40 @@
 
   <h2>🏆 Top Contributors</h2>
   <button onclick="window.location.href='/leaderboard'">View Leaderboard</button>
+
+  <script>
+    document.querySelectorAll(".like-btn").forEach(button => {
+    button.addEventListener("click", async () => {
+      const tipId = button.getAttribute("data-tipid");
+      if (!tipId) return;
+
+      try {
+        const response = await fetch("/community/like", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ tipId }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Increment the like count visually
+          const span = button.querySelector("span");
+          span.textContent = parseInt(span.textContent) + 1;
+          button.disabled = true; // Optional: disable button after liking
+        } else if (result.message === "Already liked") {
+          alert("You have already liked this tip.");
+          button.disabled = true;
+        } else {
+          alert("Failed to like. Try again.");
+        }
+      } catch (error) {
+        console.error("Error liking tip:", error);
+      }
+    });
+  });
+  </script>
 </body>
 </html>
