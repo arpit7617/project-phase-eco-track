@@ -1,0 +1,191 @@
+/* Enhanced styles for EcoTrack - Location page */
+
+body {
+  margin: 0;
+  padding: 0 1rem 4rem;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #e8f5e9, #f1fff9);
+  color: #2f3e46;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInBody 1s ease-in-out;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Navbar styles */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100vw;               /* Full viewport width */
+  left: 0;
+  right: 0;
+  background-color: #2f855a; /* Dark green, matches theme */
+  padding: 1em 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.navbar .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #ffffff;
+  user-select: none;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 1em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #d4f8e8;
+}
+
+/* Page title */
+h1 {
+  font-weight: 700;
+  font-size: 2.75rem;
+  color: #276749;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(39, 103, 73, 0.3);
+  letter-spacing: 0.05em;
+  user-select: none;
+  margin-top: 2rem; /* Add space below sticky navbar */
+}
+
+/* Status text */
+#status {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #4a5568;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  min-height: 2em; /* Keeps layout stable */
+  transition: color 0.3s ease;
+}
+
+/* Location data container */
+#output {
+  background: #ffffffdd;
+  border-radius: 16px;
+  padding: 2.5rem 3.5rem;
+  max-width: 450px;
+  width: 100%;
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.08),
+    0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  user-select: none;
+  font-size: 1.1rem;
+  color: #2d3748;
+}
+
+/* Slight hover lift for the output card */
+#output:hover {
+  box-shadow:
+    0 8px 16px rgba(39, 103, 73, 0.2),
+    0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+}
+
+/* City and country name */
+#output h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #276749;
+  margin-bottom: 1rem;
+  user-select: text;
+}
+
+/* Each data row */
+#output p {
+  margin: 0.6rem 0;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+/* Strong labels */
+#output p strong {
+  color: #2f855a;
+  font-weight: 600;
+  user-select: text;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  body {
+    padding: 1.5rem 1rem 3rem;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  #output {
+    padding: 1.8rem 2rem;
+    max-width: 100%;
+    font-size: 1rem;
+  }
+  #status {
+    font-size: 1rem;
+    margin-bottom: 1.8rem;
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeInBody {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Map Section Styles --- */
+
+/* Container for the map */
+#map {
+  width: 100%;
+  max-width: 900px;
+  height: 450px;
+  margin: 2.5rem auto;
+  border-radius: 16px;
+  box-shadow:
+    0 6px 12px rgba(0, 0, 0, 0.1),
+    0 12px 24px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for map container */
+#map:hover {
+  transform: scale(1.01);
+  box-shadow:
+    0 10px 20px rgba(39, 103, 73, 0.2),
+    0 14px 36px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  #map {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  #map {
+    height: 300px;
+    margin: 2rem 0;
+  }
+}

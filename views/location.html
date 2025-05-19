@@ -3,27 +3,28 @@
 <head>
   <title>EcoTrack - Live Location</title>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/location.css" />
+  <link rel="stylesheet" href="/location.css" /> 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
 <nav class="navbar">
-  <div class="logo">🌱 EcoTrack</div>
-  <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/weather">Weather</a>
-    <a href="/aqi">AQI</a>
-    <a href="/location">My Location</a>
-    <a href="/community">Community</a>
-  </div>
-</nav>
+    <div class="logo">🌱 EcoTrack</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/weather">Weather</a>
+      <a href="/aqi">AQI</a>
+      <a href="/location">My Location</a>
+      <a href="/community">Community</a>
+    </div>
+  </nav>
 
 
   <h1>📍 Weather & AQI Based on Your Location</h1>
   <p id="status">Detecting your location...</p>
   <div id="output"></div>
+  <div id="map" style="height: 400px; width: 100%; margin-top: 20px;"></div>
+
 
   <script>
     async function fetchLocationData(lat, lon) {
@@ -54,5 +55,38 @@
       }
     );
   </script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+  function initMap(lat, lon) {
+    const map = L.map('map').setView([lat, lon], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup("📍 Current Location")
+      .openPopup();
+  }
+
+  function fetchAndDisplayLocation() {
+    const statusEl = document.getElementById("status");
+    const fixedLat = 28.450811097235242;
+    const fixedLon = 77.28383380283748;
+
+    statusEl.innerText = "📌 Showing fixed location.";
+
+    // If you have a function to fetch location data for display, call it here:
+    // fetchLocationData(fixedLat, fixedLon);
+
+    initMap(fixedLat, fixedLon);
+  }
+
+  // Trigger fixed location display on page load
+  window.addEventListener("DOMContentLoaded", fetchAndDisplayLocation);
+</script>
+
+
+
 </body>
 </html>
