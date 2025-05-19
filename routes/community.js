@@ -52,32 +52,55 @@ function logAction(userId, action) {
 router.get("/", isLoggedIn, (req, res) => {
   const username = req.session.user;
 
-  const sql = `
-    SELECT community_tips.tip, community_tips.image AS image_path, community_tips.likes, 
+  const tipsSql = `
+    SELECT community_tips.id, community_tips.tip, community_tips.image AS image_path, community_tips.likes, 
            datetime(community_tips.created_at, 'localtime') as date, users.username
     FROM community_tips 
     JOIN users ON community_tips.user_id = users.id 
     ORDER BY community_tips.created_at DESC
   `;
 
-  db.all(sql, [], (err, rows) => {
+  const topContributorsSql = `
+    SELECT users.username, COUNT(community_tips.id) AS tipCount
+    FROM users
+    LEFT JOIN community_tips ON users.id = community_tips.user_id
+    GROUP BY users.id
+    ORDER BY tipCount DESC
+    LIMIT 5
+  `;
+
+  db.all(tipsSql, [], (err, tipsRows) => {
     if (err) {
       console.error("Error fetching community tips:", err);
       return res.send("Error loading community tips.");
     }
 
-    const tips = (rows || []).map(row => ({
-      id: row.id,              
-      tip: row.tip,
-      username: row.username,
-      imageUrl: row.image_path ? `/uploads/community/${row.image_path}` : null,
-      likes: row.likes || 0,
-      date: row.date,
-    }));
+    db.all(topContributorsSql, [], (err, contributorsRows) => {
+      if (err) {
+        console.error("Error fetching top contributors:", err);
+        return res.send("Error loading top contributors.");
+      }
 
-    res.render("community", { username, tips });
+      const tips = (tipsRows || []).map(row => ({
+        id: row.id,
+        tip: row.tip,
+        username: row.username,
+        imageUrl: row.image_path ? `/uploads/community/${row.image_path}` : null,
+        likes: row.likes || 0,
+        date: row.date,
+      }));
+
+      const topContributors = (contributorsRows || []).map(row => ({
+        username: row.username,
+        tipCount: row.tipCount,
+      }));
+
+      res.render("community", { username, tips, topContributors });
+    });
   });
 });
+
+
 
 // POST /community - Handle new tip submission with optional image upload
 router.post("/", isLoggedIn, upload.single("image"), async (req, res) => {
@@ -114,7 +137,6 @@ router.post("/", isLoggedIn, upload.single("image"), async (req, res) => {
 
 // POST /community/like - Like a tip (one like per user)
 router.post("/like", isLoggedIn, async (req, res) => {
-  console.log("Like request body:", req.body);
   const username = req.session.user;
   const { tipId } = req.body;
 

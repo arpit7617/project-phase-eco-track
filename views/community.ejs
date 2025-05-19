@@ -42,7 +42,7 @@
         <div class="tip-header">
           <img src="<%= tip.imageUrl || '/images/default.jpg' %>" alt="User Image" />
           <div>
-            <p class="tip-username"><%= tip.username %> <%= tip.id %></p>
+            <p class="tip-username"><%= tip.username %></p>
             <p class="tip-date"><%= tip.date %></p>
           </div>
         </div>
@@ -62,7 +62,20 @@
   </div>
 
   <h2>🏆 Top Contributors</h2>
-  <button onclick="window.location.href='/leaderboard'">View Leaderboard</button>
+  <div id="top-contributors">
+  <% if (topContributors && topContributors.length > 0) { %>
+    <ul>
+      <% topContributors.forEach(function(user) { %>
+        <li>
+          <strong><%= user.username %></strong> — <%= user.tipCount %> tip<%= user.tipCount !== 1 ? 's' : '' %>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No contributors found yet. Be the first to share a tip!</p>
+  <% } %>
+</div>
+
 
   <script>
     document.querySelectorAll(".like-btn").forEach(button => {
