@@ -45,6 +45,18 @@ function createTables() {
       )`, (err) => {
         if (err) return reject(err);
       });
+      db.run(`CREATE TABLE IF NOT EXISTS sustainability_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        category TEXT NOT NULL,             -- e.g., car_free_day, plastic_avoided
+        quantity REAL DEFAULT 1,            -- e.g., 1 day, 2 bottles
+        unit TEXT DEFAULT '',               -- e.g., "day", "bottle"
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      )`, (err) => {
+      if (err) return reject(err);
+      });
+
 
       // If all runs succeed, resolve after last one
       // Use a small trick: call resolve in a setImmediate or after a short delay
