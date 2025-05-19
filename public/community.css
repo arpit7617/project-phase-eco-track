@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f0fdf4;
+  color: #2f4f4f;
+  min-height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2f855a;
+  padding: 1em 2em;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  color: white;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.nav-links a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #c6f6d5;
+}
+
+/* Page Heading */
+h1 {
+  text-align: center;
+  color: #2f855a;
+  margin-top: 1.5em;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 2em;
+  color: #4a5568;
+}
+
+/* Tip Submission Form */
+form {
+  max-width: 600px;
+  background: #ffffff;
+  margin: 0 auto 3em;
+  padding: 2em;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 128, 0, 0.05);
+}
+
+form label {
+  display: block;
+  margin-top: 1em;
+  font-weight: 600;
+  color: #2f4f4f;
+}
+
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 0.8em;
+  margin-top: 0.5em;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border 0.3s;
+}
+
+form input:focus,
+form textarea:focus {
+  outline: none;
+  border: 1.5px solid #2f855a;
+  box-shadow: 0 0 8px rgba(47, 133, 90, 0.2);
+}
+
+form button {
+  margin-top: 1.5em;
+  padding: 0.8em 2em;
+  background-color: #2f855a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #276749;
+}
+
+/* Tips Section */
+h2 {
+  text-align: center;
+  color: #2f855a;
+  margin-bottom: 1em;
+}
+
+#tips-container {
+  max-width: 800px;
+  margin: 0 auto 3em;
+  background-color: #ffffff;
+  padding: 2em;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(47, 133, 90, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    margin-top: 10px;
+  }
+
+  .nav-links a {
+    display: block;
+    margin: 10px 0;
+  }
+}

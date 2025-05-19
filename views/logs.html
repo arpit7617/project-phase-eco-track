@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EcoTrack - Logs</title>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/logs.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🌱 EcoTrack</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/weather">Weather</a>
+      <a href="/aqi">AQI</a>
+      <a href="/location">My Location</a>
+      <a href="/community">Community</a>
+      <a href="/logs">Logs</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>📜 Your Activity Logs</h1>
+    <p class="subheading">Track your sustainability actions and visits.</p>
+
+    <div id="logs-container">
+      <table id="logs-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Action</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Log rows will be inserted here -->
+        </tbody>
+      </table>
+      <div id="pagination" class="pagination"></div>
+    </div>
+  </div>
+
+  <script>
+  let currentPage = 1;
+
+  function fetchLogs(page = 1) {
+    fetch(`/api/logs?page=${page}`)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#logs-table tbody');
+        tbody.innerHTML = '';
+
+        if (!data.logs || data.logs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="3">No logs found.</td></tr>';
+          document.getElementById('pagination').innerHTML = '';
+          return;
+        }
+
+        data.logs.forEach((log, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${(page - 1) * 10 + index + 1}</td>
+            <td>${log.action}</td>
+            <td>${log.timestamp}</td>
+          `;
+          tbody.appendChild(row);
+        });
+
+        setupPagination(data.pagination.page, data.pagination.totalPages);
+      })
+      .catch(err => {
+        console.error('Error loading logs:', err);
+      });
+  }
+
+  function setupPagination(page, totalPages) {
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.innerHTML = '';
+
+    if (totalPages <= 1) return; // no need for pagination
+
+    // Previous button
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = 'Previous';
+    prevBtn.disabled = page === 1;
+    prevBtn.onclick = () => {
+      if (page > 1) {
+        currentPage--;
+        fetchLogs(currentPage);
+      }
+    };
+    paginationDiv.appendChild(prevBtn);
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement('button');
+      pageBtn.textContent = i;
+      if (i === page) pageBtn.disabled = true;
+      pageBtn.onclick = () => {
+        currentPage = i;
+        fetchLogs(currentPage);
+      };
+      paginationDiv.appendChild(pageBtn);
+    }
+
+    // Next button
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Next';
+    nextBtn.disabled = page === totalPages;
+    nextBtn.onclick = () => {
+      if (page < totalPages) {
+        currentPage++;
+        fetchLogs(currentPage);
+      }
+    };
+    paginationDiv.appendChild(nextBtn);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchLogs(currentPage);
+  });
+</script>
+
+</body>
+</html>

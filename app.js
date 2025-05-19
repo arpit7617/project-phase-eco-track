@@ -28,6 +28,8 @@ const weatherRoutes = require("./routes/weather");
 const aqiRoutes = require("./routes/aqi");
 const authRoutes = require("./routes/auth");
 const locationRoutes = require("./routes/location");
+const logsRoutes = require("./routes/logs");
+
 
 // Use routes
 app.use("/", indexRoutes);
@@ -36,6 +38,9 @@ app.use("/weather", weatherRoutes);
 app.use("/aqi", aqiRoutes);
 app.use("/", authRoutes);
 app.use("/location", locationRoutes);
+app.use("/", logsRoutes);
+
+
 
 app.get("/location-data", async (req, res) => {
   const { lat, lon } = req.query;
