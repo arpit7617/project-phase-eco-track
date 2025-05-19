@@ -1,5 +1,5 @@
 node_modules/
-public/uploads/
+public/uploads/community/
 .env
 database.db
 .DS_Store
