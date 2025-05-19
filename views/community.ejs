@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
   <title>EcoTrack - Community</title>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <link rel="stylesheet" href="/community.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 </head>
 <body>
-<nav class="navbar">
+  <nav class="navbar">
   <div class="logo">🌱 EcoTrack</div>
   <div class="nav-links">
     <a href="/">Home</a>
@@ -16,30 +14,33 @@
     <a href="/aqi">AQI</a>
     <a href="/location">My Location</a>
     <a href="/community">Community</a>
+    <a href="/logout">Logout (<%= username %>)</a>
     <a href="/logs">Logs</a>
   </div>
 </nav>
 
-  
-
   <h1>🌍 EcoTrack Community</h1>
   <p>Share your eco-friendly tips and learn from others!</p>
 
-  <!-- Tip Submission Form -->
   <form action="/community" method="POST">
     <label for="username">Your Name:</label>
-    <input type="text" id="username" name="username" required>
-    
+    <input type="text" id="username" name="username" value="<%= username %>" readonly />
+
     <label for="tip">Your Eco-Friendly Tip:</label>
     <textarea id="tip" name="tip" rows="4" required></textarea>
-    
+
     <button type="submit">Share Tip</button>
   </form>
 
   <h2>📚 Community Tips</h2>
   <div id="tips-container">
-    <!-- Submitted tips will be displayed here -->
+    <% if (tips.length > 0) { %>
+      <% tips.forEach(function(tip) { %>
+        <p><strong><%= tip.username %>:</strong> <%= tip.tip %></p>
+      <% }) %>
+    <% } else { %>
+      <p>No tips shared yet. Be the first!</p>
+    <% } %>
   </div>
-
 </body>
 </html>

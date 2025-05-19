@@ -1,97 +1,93 @@
+/* === General Body Styling === */
 body {
   margin: 0;
-  padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: #f0fdf4;
-  color: #2f4f4f;
-  min-height: 100vh;
+  background: linear-gradient(to right, #e8f5e9, #f1fff9);
+  color: #333;
+  animation: fadeInBody 1s ease-in-out;
+  padding: 0;
 }
 
-/* Navbar Styles */
 .navbar {
+  background-color: #2f855a;
+  padding: 1em 2em;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2f855a;
-  padding: 1em 2em;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.logo {
-  color: white;
+.navbar .logo {
   font-size: 1.5em;
-  font-weight: 600;
+  font-weight: bold;
+  color: #ffffff;
 }
 
 .nav-links a {
-  color: white;
-  margin-left: 20px;
+  color: #ffffff;
   text-decoration: none;
+  margin: 0 1em;
   font-weight: 500;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #c6f6d5;
+  color: #d4f8e8;
 }
 
-/* Page Heading */
+/* === Header Section === */
 h1 {
   text-align: center;
-  color: #2f855a;
   margin-top: 1.5em;
+  font-size: 2.2em;
+  color: #2f855a;
 }
 
 p {
   text-align: center;
+  font-size: 1.1em;
   margin-bottom: 2em;
-  color: #4a5568;
 }
 
-/* Tip Submission Form */
+/* === Form Styling === */
 form {
   max-width: 600px;
+  margin: 0 auto;
   background: #ffffff;
-  margin: 0 auto 3em;
   padding: 2em;
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 128, 0, 0.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 form label {
   display: block;
   margin-top: 1em;
   font-weight: 600;
-  color: #2f4f4f;
 }
 
 form input[type="text"],
 form textarea {
   width: 100%;
   padding: 0.8em;
-  margin-top: 0.5em;
-  border: 1px solid #cbd5e0;
+  margin-top: 0.3em;
+  border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1em;
-  transition: border 0.3s;
-}
-
-form input:focus,
-form textarea:focus {
-  outline: none;
-  border: 1.5px solid #2f855a;
-  box-shadow: 0 0 8px rgba(47, 133, 90, 0.2);
+  font-family: 'Poppins', sans-serif;
+  resize: vertical;
 }
 
 form button {
   margin-top: 1.5em;
-  padding: 0.8em 2em;
   background-color: #2f855a;
   color: white;
   border: none;
-  border-radius: 10px;
+  padding: 0.8em 1.5em;
   font-size: 1em;
-  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -100,35 +96,33 @@ form button:hover {
   background-color: #276749;
 }
 
-/* Tips Section */
+/* === Tips Section === */
 h2 {
   text-align: center;
+  margin: 2.5em 0 1em;
   color: #2f855a;
-  margin-bottom: 1em;
 }
 
 #tips-container {
   max-width: 800px;
   margin: 0 auto 3em;
-  background-color: #ffffff;
-  padding: 2em;
+  background: #f9fdfb;
+  padding: 1.5em;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(47, 133, 90, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+#tips-container p {
+  background: #ffffff;
+  margin: 1em 0;
+  padding: 1em;
+  border-left: 5px solid #2f855a;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
 
-  .nav-links {
-    margin-top: 10px;
-  }
-
-  .nav-links a {
-    display: block;
-    margin: 10px 0;
-  }
+/* === Animations === */
+@keyframes fadeInBody {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
