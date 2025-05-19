@@ -53,7 +53,6 @@ router.get("/api/weather", async (req, res) => {
         console.error("Logging error:", logErr.message);
       }
     }
-    console.log("checking test");
 
     res.json({
       name: data.name,

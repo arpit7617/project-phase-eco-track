@@ -17,7 +17,7 @@ function getUserId(username) {
     });
   });
 }
-
+ 
 // Helper to log actions in logs table
 function logAction(userId, action) {
   return new Promise((resolve, reject) => {
@@ -97,15 +97,18 @@ router.get("/api/aqi", async (req, res) => {
 
     // Send JSON response
     res.json({
-      name,
-      country,
-      aqi,
-      aqiStatus,
-      aqiClass,
-      mainPollutant: pollution.mainus,
-      advice,
-      updated: pollution.ts,
-    });
+    name,
+    country,
+    lat,
+    lon,
+    aqi,
+    aqiStatus,
+    aqiClass,
+    mainPollutant: pollution.mainus,
+    advice,
+    updated: pollution.ts,
+  });
+
   } catch (err) {
     console.error("AQI Error:", err.message);
     res.json({ error: "Unable to fetch AQI data. Try another city." });

@@ -32,6 +32,9 @@
   <div id="aqi-info"></div>
 
   <script>
+    let map;
+    let marker;
+
     document.getElementById("aqiForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const city = document.getElementById("city").value;
@@ -52,8 +55,38 @@
         <p><strong>Health Advice:</strong> ${data.advice}</p>
         <p><strong>Last Updated:</strong> ${new Date(data.updated).toLocaleString()}</p>
       `;
+
+      // Show AQI on the map
+      if (!map) {
+        map = L.map("aqi-map").setView([0, 0], 5);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap",
+        }).addTo(map);
+      }
+
+      const lat = data.lat;
+      const lon = data.lon;
+
+      map.setView([lat, lon], 10);
+
+      if (marker) {
+        marker.setLatLng([lat, lon])
+          .setPopupContent(`${data.name} AQI: ${data.aqi} (${data.aqiStatus})`);
+      } else {
+        marker = L.marker([lat, lon])
+          .addTo(map)
+          .bindPopup(`${data.name} AQI: ${data.aqi} (${data.aqiStatus})`)
+          .openPopup();
+      }
     });
   </script>
+
+  
+
+  <div id="aqi-map" style="height: 400px; margin: 20px;"></div>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <footer>
     © 2025 EcoTrack · Breathe Better, Live Healthier 💚
