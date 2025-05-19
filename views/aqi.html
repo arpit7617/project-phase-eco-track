@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EcoTrack - AQI Monitor</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <nav>
+    <a href="/">Home</a>
+    <a href="/weather">Weather</a>
+    <a href="/aqi">AQI Monitor</a>
+    <a href="/community">Community</a>
+    <a href="/location">📍 Live Location</a>
+  </nav>
+
+  <h1>🌫️ Air Quality Index Monitor</h1>
+
+  <form id="aqiForm" class="weather-form">
+    <label for="city">Enter City:</label>
+    <input type="text" id="city" name="city" required placeholder="e.g. Delhi" />
+    <button type="submit">Get AQI</button>
+  </form>
+
+  <div id="aqi-info"></div>
+
+  <script>
+    document.getElementById("aqiForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const city = document.getElementById("city").value;
+      const res = await fetch(`/aqi/api/aqi?city=${city}`);
+      const data = await res.json();
+
+      const container = document.getElementById("aqi-info");
+
+      if (data.error) {
+        container.innerHTML = `<p>❌ ${data.error}</p>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <h2>${data.name}, ${data.country}</h2>
+        <p><strong>AQI:</strong> <span class="${data.aqiClass}">${data.aqi} (${data.aqiStatus})</span></p>
+        <p><strong>Main Pollutant:</strong> ${data.mainPollutant}</p>
+        <p><strong>Health Advice:</strong> ${data.advice}</p>
+        <p><strong>Last Updated:</strong> ${new Date(data.updated).toLocaleString()}</p>
+      `;
+    });
+  </script>
+
+  <footer>
+    © 2025 EcoTrack · Breathe Better, Live Healthier 💚
+  </footer>
+
+</body>
+</html>

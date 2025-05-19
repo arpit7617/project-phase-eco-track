@@ -1,42 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>EcoTrack - Weather</title>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 </head>
-
 <body>
 
-<nav>
-  <a href="/">Home</a>
-  <a href="/weather">Weather</a>
-  <a href="/aqi">AQI Monitor</a>
-  <a href="/community">Community</a>
-  <a href="/location">📍 Live Location</a>
-</nav>
-
+  <nav>
+    <a href="/">Home</a>
+    <a href="/weather">Weather</a>
+    <a href="/aqi">AQI Monitor</a>
+    <a href="/community">Community</a>
+    <a href="/location">📍 Live Location</a>
+  </nav>
 
   <h1>Real-Time Weather 🌦️</h1>
 
-  <form action="/weather" method="GET" class="weather-form">
+  <form id="weatherForm" class="weather-form">
     <label for="city">Enter City:</label>
-    <input type="text" id="city" name="city" required>
+    <input type="text" id="city" name="city" required />
     <button type="submit">Get Weather</button>
   </form>
-  
-  
 
-  <div id="weather-info">
-    <h2>{{city}} Weather</h2>
-    <p>Temperature: {{temp}}°C</p>
-    <p>Condition: {{description}}</p>
-    <p>Humidity: {{humidity}}%</p>
-  </div>
+  <div id="weather-info"></div>
+
+  <script>
+    document.getElementById("weatherForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const city = document.getElementById("city").value;
+
+      const res = await fetch(`/weather/api/weather?city=${city}`);
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById("weather-info").innerHTML = "<p>❌ Weather data not available. Please try again.</p>";
+        return;
+      }
+
+      document.getElementById("weather-info").innerHTML = `
+        <h2>${data.name} Weather</h2>
+        <p>🌡️ Temperature: ${data.temp}°C</p>
+        <p>🌤️ Condition: ${data.condition}</p>
+        <p>💧 Humidity: ${data.humidity}%</p>
+        <p>🌬️ Wind Speed: ${data.wind} m/s</p>
+      `;
+    });
+  </script>
 
 </body>
-
 </html>

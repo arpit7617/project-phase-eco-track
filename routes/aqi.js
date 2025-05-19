@@ -1,15 +1,22 @@
 const express = require("express");
 const axios = require("axios");
+const path = require("path");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+// Serve the static AQI HTML page
+router.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "views", "aqi.html"));
+});
+
+// Provide AQI data as JSON
+router.get("/api/aqi", async (req, res) => {
   const city = req.query.city || "Delhi";
   const airKey = process.env.IQAIR_API_KEY;
   const weatherKey = process.env.OPENWEATHER_API_KEY;
 
   try {
-    // Get city coordinates
-    const geoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${weatherKey}`;
+    // Get coordinates of the city
+    const geoUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${weatherKey}`;
     const geoResponse = await axios.get(geoUrl);
 
     if (!geoResponse.data.length) throw new Error("City not found.");
@@ -19,8 +26,7 @@ router.get("/", async (req, res) => {
     const aqiUrl = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${airKey}`;
     const aqiResponse = await axios.get(aqiUrl);
 
-    const data = aqiResponse.data.data;
-    const pollution = data.current.pollution;
+    const pollution = aqiResponse.data.data.current.pollution;
 
     const aqi = pollution.aqius;
     let aqiStatus = "";
@@ -53,64 +59,20 @@ router.get("/", async (req, res) => {
       aqiClass = "hazardous";
     }
 
-    // Send custom HTML with styled AQI level
-    const html = `
-      <html>
-        <head>
-          <title>EcoTrack - AQI</title>
-          <link rel="stylesheet" href="/style.css">
-          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-        </head>
-        <body>
-          <nav>
-            <a href="/">Home</a>
-            <a href="/weather">Weather</a>
-            <a href="/aqi">AQI Monitor</a>
-            <a href="/community">Community</a>
-            <a href="/location">📍 Live Location</a>
-          </nav>
-
-          <h1>Air Quality Index 🌫️</h1>
-
-          <form method="GET" action="/aqi" class="weather-form">
-            <label for="city">Enter City:</label>
-            <input type="text" id="city" name="city" required placeholder="e.g., Delhi">
-            <button type="submit">Get AQI</button>
-          </form>
-
-          <div id="aqi-info">
-            <h2>${name}, ${country}</h2>
-            <p><strong>AQI:</strong> <span class="${aqiClass}">${aqi} (${aqiStatus})</span></p>
-            <p><strong>Main Pollutant:</strong> ${pollution.mainus}</p>
-            <p><strong>Health Advice:</strong> ${advice}</p>
-            <p><strong>Last Updated:</strong> ${pollution.ts}</p>
-          </div>
-
-          <footer>
-            © 2025 EcoTrack · Stay Safe, Breathe Clean 💚
-          </footer>
-        </body>
-      </html>
-    `;
-    res.send(html);
+    // Send JSON response
+    res.json({
+      name,
+      country,
+      aqi,
+      aqiStatus,
+      aqiClass,
+      mainPollutant: pollution.mainus,
+      advice,
+      updated: pollution.ts,
+    });
   } catch (err) {
     console.error("AQI Error:", err.message);
-    res.send(`
-      <html>
-        <head><title>EcoTrack - AQI</title><link rel="stylesheet" href="/style.css"></head>
-        <body>
-          <nav>
-            <a href="/">Home</a>
-            <a href="/weather">Weather</a>
-            <a href="/aqi">AQI Monitor</a>
-            <a href="/community">Community</a>
-            <a href="/location">📍 Live Location</a>
-          </nav>
-          <h1>Unable to fetch AQI for "${req.query.city || 'Unknown'}"</h1>
-          <p>Please try another city.</p>
-        </body>
-      </html>
-    `);
+    res.json({ error: "Unable to fetch AQI data. Try another city." });
   }
 });
 
