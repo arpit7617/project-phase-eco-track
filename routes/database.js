@@ -38,6 +38,17 @@ function createTables() {
         if (err) return reject(err);
       });
 
+      db.run(`CREATE TABLE IF NOT EXISTS likes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        tip_id INTEGER NOT NULL,
+        UNIQUE(user_id, tip_id),
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(tip_id) REFERENCES community_tips(id)
+      )`, (err) => {
+        if (err) return reject(err);
+      });
+
       db.run(`CREATE TABLE IF NOT EXISTS logs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
