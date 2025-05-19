@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
+const sqlite3 = require("sqlite3").verbose();
+const bcrypt = require("bcryptjs");  
 
-// In-memory user store (for testing only)
-const users = [];
+const db = new sqlite3.Database(path.join(__dirname, "..", "database.db"));
+
+const SALT_ROUNDS = 10; // bcrypt salt complexity
 
 // GET Signup Page
 router.get("/signup", (req, res) => {
@@ -12,13 +15,37 @@ router.get("/signup", (req, res) => {
 
 // POST Signup
 router.post("/signup", (req, res) => {
-  const { username, password } = req.body;
-  if (users.find(u => u.username === username)) {
-    return res.send("⚠️ User already exists. Please <a href='/login'>Login</a>.");
+  const { fullname, username, email, phone, password, confirm_password } = req.body;
+
+  if (password !== confirm_password) {
+    return res.send("⚠️ Passwords do not match. Please <a href='/signup'>try again</a>.");
   }
-  users.push({ username, password });
-  req.session.user = username;
-  res.redirect("/community");
+
+  const checkUserSql = `SELECT * FROM users WHERE username = ? OR email = ?`;
+  db.get(checkUserSql, [username, email], (err, row) => {
+    if (err) {
+      return res.send("⚠️ Database error. Please try again later.");
+    }
+    if (row) {
+      return res.send("⚠️ User with this username or email already exists. Please <a href='/login'>Login</a>.");
+    }
+
+    // Hash the password before saving
+    bcrypt.hash(password, SALT_ROUNDS, (hashErr, hashedPassword) => {
+      if (hashErr) {
+        return res.send("⚠️ Error processing password. Please try again.");
+      }
+
+      const insertUserSql = `INSERT INTO users (fullname, username, email, phone, password) VALUES (?, ?, ?, ?, ?)`;
+      db.run(insertUserSql, [fullname, username, email, phone, hashedPassword], function(err) {
+        if (err) {
+          return res.send("⚠️ Failed to create user. Please try again.");
+        }
+        req.session.user = username;
+        res.redirect("/community");
+      });
+    });
+  });
 });
 
 // GET Login Page
@@ -29,18 +56,34 @@ router.get("/login", (req, res) => {
 // POST Login
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  const user = users.find(u => u.username === username && u.password === password);
-  if (!user) {
-    return res.send("❌ Invalid credentials. <a href='/login'>Try again</a>.");
-  }
-  req.session.user = username;
-  res.redirect("/community");
+  const sql = `SELECT * FROM users WHERE username = ?`;
+
+  db.get(sql, [username], (err, user) => {
+    if (err) {
+      return res.send("⚠️ Database error. Please try again later.");
+    }
+    if (!user) {
+      return res.send("❌ Invalid credentials. <a href='/login'>Try again</a>.");
+    }
+
+    // Compare hashed password
+    bcrypt.compare(password, user.password, (compareErr, isMatch) => {
+      if (compareErr) {
+        return res.send("⚠️ Error verifying password. Please try again.");
+      }
+      if (!isMatch) {
+        return res.send("❌ Invalid credentials. <a href='/login'>Try again</a>.");
+      }
+      req.session.user = username;
+      res.redirect("/community");
+    });
+  });
 });
 
 // Logout
 router.get("/logout", (req, res) => {
   req.session.destroy();
-  res.send("👋 Logged out. <a href='/login'>Login again</a>.");
+  res.redirect('/login');
 });
 
 module.exports = router;

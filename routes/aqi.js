@@ -1,14 +1,40 @@
 const express = require("express");
 const axios = require("axios");
 const path = require("path");
-const router = express.Router();
+const sqlite3 = require("sqlite3").verbose();
 
-// Serve the static AQI HTML page
+const router = express.Router();
+const db = new sqlite3.Database(path.join(__dirname, "..", "database.db"));
+
+// Helper to get user id from username
+function getUserId(username) {
+  return new Promise((resolve, reject) => {
+    const sql = `SELECT id FROM users WHERE username = ?`;
+    db.get(sql, [username], (err, row) => {
+      if (err) return reject(err);
+      if (!row) return reject(new Error("User not found"));
+      resolve(row.id);
+    });
+  });
+}
+
+// Helper to log actions in logs table
+function logAction(userId, action) {
+  return new Promise((resolve, reject) => {
+    const sql = `INSERT INTO logs (user_id, action) VALUES (?, ?)`;
+    db.run(sql, [userId, action], function (err) {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+}
+
+// Serve the static AQI HTML page (accessible to all)
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "views", "aqi.html"));
 });
 
-// Provide AQI data as JSON
+// Provide AQI data as JSON (accessible to all)
 router.get("/api/aqi", async (req, res) => {
   const city = req.query.city || "Delhi";
   const airKey = process.env.IQAIR_API_KEY;
@@ -57,6 +83,17 @@ router.get("/api/aqi", async (req, res) => {
       aqiStatus = "Hazardous";
       advice = "Everyone should avoid all outdoor exertion.";
       aqiClass = "hazardous";
+    }
+
+    // If user is logged in, log the action
+    if (req.session && req.session.user) {
+      try {
+        const userId = await getUserId(req.session.user);
+        await logAction(userId, `Fetched AQI data for city: ${city}`);
+      } catch (logErr) {
+        console.error("Logging error:", logErr.message);
+        // Don't block response on logging failure
+      }
     }
 
     // Send JSON response

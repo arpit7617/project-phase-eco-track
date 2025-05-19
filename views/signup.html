@@ -2,18 +2,36 @@
 <html lang="en">
 <head>
   <title>Signup</title>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script>
+    function validateForm() {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return false;
+      }
+      return true;
+    }
+  </script>
 </head>
 <body>
   <h1>📝 Signup</h1>
-  <form action="/signup" method="POST">
-    <input type="text" name="username" placeholder="Username" required>
-    <br>
-    <input type="password" name="password" placeholder="Password" required>
-    <br>
+  <form action="/signup" method="POST" onsubmit="return validateForm()">
+    <input type="text" name="fullname" placeholder="Full Name" required />
+    <br />
+    <input type="text" name="username" placeholder="Username" required />
+    <br />
+    <input type="email" name="email" placeholder="Email" required />
+    <br />
+    <input type="tel" name="phone" placeholder="Phone Number" pattern="[0-9]{10}" title="Enter a 10-digit phone number" required />
+    <br />
+    <input type="password" id="password" name="password" placeholder="Password" required />
+    <br />
+    <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm Password" required />
+    <br />
     <button type="submit">Sign Up</button>
   </form>
   <p>Already have an account? <a href="/login">Login here</a></p>

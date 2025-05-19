@@ -5,13 +5,16 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3001;
 const axios = require("axios");
-const session = require("express-session"); // ✅ Added session
+const session = require("express-session");
+
+// Import database connection and table creation from routes/database.js
+const { createTables } = require("./routes/database");
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-// ✅ Use session middleware
+// Use session middleware
 app.use(session({
   secret: "eco-secret-key", // Use a strong secret key in production
   resave: false,
@@ -23,16 +26,15 @@ const indexRoutes = require("./routes/index");
 const communityRoutes = require("./routes/community");
 const weatherRoutes = require("./routes/weather");
 const aqiRoutes = require("./routes/aqi");
-const authRoutes = require("./routes/auth"); // ✅ Add this line
+const authRoutes = require("./routes/auth");
+const locationRoutes = require("./routes/location");
 
 // Use routes
 app.use("/", indexRoutes);
 app.use("/community", communityRoutes);
 app.use("/weather", weatherRoutes);
 app.use("/aqi", aqiRoutes);
-app.use("/", authRoutes); // ✅ Mount auth routes
-
-const locationRoutes = require("./routes/location");
+app.use("/", authRoutes);
 app.use("/location", locationRoutes);
 
 app.get("/location-data", async (req, res) => {
@@ -61,14 +63,22 @@ app.get("/location-data", async (req, res) => {
   }
 });
 
-
 // Error handler
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err.stack);
   res.status(500).send("Something went wrong!");
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`🚀 EcoTrack is running at http://localhost:${port}`);
-});
+// Initialize DB tables before starting the server
+createTables()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`🚀 EcoTrack is running at http://localhost:${port}`);
+    });
+  })
+  .catch(err => {
+    console.error("Failed to create tables or connect to DB:", err);
+    process.exit(1); // Stop server startup on DB failure
+  });
+
+  
