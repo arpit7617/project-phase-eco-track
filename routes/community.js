@@ -5,7 +5,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 const db = new sqlite3.Database(path.join(__dirname, "..", "database.db"));
 
-// ✅ Middleware to protect community route
+// Middleware to protect community route
 function isLoggedIn(req, res, next) {
   if (req.session.user) return next();
   res.redirect("/login");
@@ -33,12 +33,10 @@ function logAction(userId, action) {
   });
 }
 
-
-// GET Community Page — fetch tips from DB
+// GET Community Page — fetch tips from DB and render community.ejs
 router.get("/", isLoggedIn, (req, res) => {
   const username = req.session.user;
 
-  // Fetch all tips joined with usernames
   const sql = `
     SELECT community_tips.tip, users.username 
     FROM community_tips 
@@ -51,49 +49,10 @@ router.get("/", isLoggedIn, (req, res) => {
       return res.send("⚠️ Error loading community tips.");
     }
 
-    let tipsHTML = rows.map(tip => `
-      <p><strong>${tip.username}:</strong> ${tip.tip}</p>
-    `).join("");
-
-    if (!tipsHTML) {
-      tipsHTML = "<p>No tips shared yet. Be the first!</p>";
-    }
-
-    res.send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <title>EcoTrack - Community</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="/style.css">
-      </head>
-      <body>
-        <nav>
-          <a href="/">Home</a>
-          <a href="/weather">Weather</a>
-          <a href="/aqi">AQI Monitor</a>
-          <a href="/community">Community</a>
-          <a href="/logout">Logout (${username})</a>
-        </nav>
-
-        <h1>🌍 EcoTrack Community</h1>
-        <p>Share your eco-friendly tips and learn from others!</p>
-
-        <form action="/community" method="POST">
-          <label for="username">Your Name:</label>
-          <input type="text" id="username" name="username" value="${username}" readonly>
-
-          <label for="tip">Your Eco-Friendly Tip:</label>
-          <textarea id="tip" name="tip" rows="4" required></textarea>
-
-          <button type="submit">Share Tip</button>
-        </form>
-
-        <h2>📚 Community Tips</h2>
-        <div id="tips-container">${tipsHTML}</div>
-      </body>
-      </html>
-    `);
+    res.render("community", {
+      username: username,
+      tips: rows
+    });
   });
 });
 
@@ -116,7 +75,6 @@ router.post("/", isLoggedIn, async (req, res) => {
         return res.send("⚠️ Failed to save your tip. Please try again.");
       }
 
-      // Log the action of posting a tip
       try {
         await logAction(userId, `Posted a community tip: "${tip.substring(0, 50)}"`);
       } catch (logErr) {

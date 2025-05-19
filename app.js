@@ -1,46 +1,60 @@
+// Load environment variables from .env file at the very top
 require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
-const app = express();
-const port = process.env.PORT || 3001;
 const axios = require("axios");
 const session = require("express-session");
 
-// Import database connection and table creation from routes/database.js
+const app = express();
+const port = process.env.PORT || 3001;
+
+// Import database setup
 const { createTables } = require("./routes/database");
+
+// Set up the view engine (if using EJS, Pug, etc.)
+app.set("view engine", "ejs"); // optional, only if you plan to render views
+app.set("views", path.join(__dirname, "views")); // optional
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.json()); // Good for handling JSON in POST requests
+app.use(express.static(path.join(__dirname, "public"))); // Better to use absolute path
 
-// Use session middleware
+// Session middleware
 app.use(session({
-  secret: "eco-secret-key", // Use a strong secret key in production
+  secret: process.env.SESSION_SECRET || "eco-secret-key", // Move secret to .env
   resave: false,
   saveUninitialized: false,
 }));
 
-// Import routes
+// Route imports
 const indexRoutes = require("./routes/index");
 const communityRoutes = require("./routes/community");
 const weatherRoutes = require("./routes/weather");
 const aqiRoutes = require("./routes/aqi");
 const authRoutes = require("./routes/auth");
 const locationRoutes = require("./routes/location");
+const logsRoutes = require("./routes/logs");
 
-// Use routes
+// Route usage
 app.use("/", indexRoutes);
 app.use("/community", communityRoutes);
 app.use("/weather", weatherRoutes);
 app.use("/aqi", aqiRoutes);
 app.use("/", authRoutes);
 app.use("/location", locationRoutes);
+app.use("/", logsRoutes);
 
+// Live location API
 app.get("/location-data", async (req, res) => {
   const { lat, lon } = req.query;
   const weatherKey = process.env.OPENWEATHER_API_KEY;
   const aqiKey = process.env.IQAIR_API_KEY;
+
+  if (!lat || !lon) {
+    return res.status(400).json({ error: "Latitude and Longitude are required." });
+  }
 
   try {
     const weatherRes = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${weatherKey}`);
@@ -59,17 +73,17 @@ app.get("/location-data", async (req, res) => {
     });
   } catch (err) {
     console.error("Live Location Error:", err.message);
-    res.status(500).json({ error: "Failed to fetch data." });
+    res.status(500).json({ error: "Failed to fetch location data." });
   }
 });
 
-// Error handler
+// Global error handler
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err.stack);
   res.status(500).send("Something went wrong!");
 });
 
-// Initialize DB tables before starting the server
+// Start server after DB setup
 createTables()
   .then(() => {
     app.listen(port, () => {
@@ -78,7 +92,5 @@ createTables()
   })
   .catch(err => {
     console.error("Failed to create tables or connect to DB:", err);
-    process.exit(1); // Stop server startup on DB failure
+    process.exit(1);
   });
-
-  
